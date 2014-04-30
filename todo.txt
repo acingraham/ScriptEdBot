@@ -1,0 +1,3 @@
+Have node server run on startup
+Add stop button on clientside
+Loading screen clientside
