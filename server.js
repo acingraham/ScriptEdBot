@@ -1,42 +1,39 @@
 var http = require('http'),
     fs = require('fs'),
     mime = require('mime'),
-    spawn = require('child_process').spawn,
-    qs = require('querystring');
+    spawn = require('child_process').spawn;
 
 http.createServer(function (req, res) {
 	var filepath = __dirname + req.url,
 	    bot,
-	    body,
 	    userCode;
 
 	console.log(filepath);
 
 	if (req.method === 'POST') {
 		console.log('post received');
-		body = '';
+		userCode = '';
 		req.on('data', function (data) {
-			body += data;
+			userCode += data;
 		});
+
 		req.on('end', function () {
-			userCode = qs.parse(body);
 			console.log(userCode);
-		});
+			fs.writeFileSync('code.js', userCode);
 
+			bot = spawn('node', ['code.js']);
 
-		/*
-		bot = spawn('node', ['studentBot.js']);
+			bot.stdout.on('data', function (data) {
+				console.log('stdout: ' + data);
+			});
+			bot.stderr.on('data', function (data) {
+				console.log('stderr: ' + data);
+			});
+			bot.on('close', function (statusCode) {
+				console.log('bot stopped with status code ' + statusCode);
+			});
 
-		bot.stdout.on('data', function (data) {
-			console.log('stdout: ' + data);
 		});
-		bot.stderr.on('data', function (data) {
-			console.log('stderr: ' + data);
-		});
-		bot.on('close', function (statusCode) {
-			console.log('bot stopped with status code ' + statusCode);
-		});
-		*/
 
 	} else {
 		fs.readFile(filepath, function(err, data) {

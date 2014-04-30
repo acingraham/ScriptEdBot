@@ -38,6 +38,17 @@
         editor.setTheme("ace/theme/monokai");
         editor.getSession().setMode("ace/mode/javascript");
 
+        $.ajax({
+            url: "codeTemplate.js",
+            dataType: "text"
+        })
+        .done(function (msg) {
+            editor.getSession().setValue(msg);
+        })
+        .fail(function () {
+            editor.getSession().setValue("// Failed to retrieve example code.  You're on your own!");
+        });
+
         $('#runCode').click(function() {
             console.log(editor.getSession().getValue());
             $.post('index.html', editor.getSession().getValue());
