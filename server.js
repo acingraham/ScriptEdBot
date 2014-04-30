@@ -1,17 +1,28 @@
 var http = require('http'),
     fs = require('fs'),
     mime = require('mime'),
-    spawn = require('child_process').spawn;
+    spawn = require('child_process').spawn,
+    qs = require('querystring');
 
 http.createServer(function (req, res) {
 	var filepath = __dirname + req.url,
-	    bot;
+	    bot,
+	    body,
+	    userCode;
 
 	console.log(filepath);
 
 	if (req.method === 'POST') {
-
 		console.log('post received');
+		body = '';
+		req.on('data', function (data) {
+			body += data;
+		});
+		req.on('end', function () {
+			userCode = qs.parse(body);
+			console.log(userCode);
+		});
+
 
 		/*
 		bot = spawn('node', ['studentBot.js']);

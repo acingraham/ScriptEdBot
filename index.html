@@ -10,6 +10,15 @@
         bottom: 0;
         left: 0;
     }
+
+    #runCode {
+        z-index: 1000;
+        width: 200px;
+        height: 100px;
+        position: absolute;
+        top: 20px;
+        right: 40px;
+    }
 </style>
 </head>
 <body>
@@ -18,12 +27,23 @@
     var x = "All this is syntax highlighted";
     return x;
 }</div>
+
+<button id="runCode">Run</button>
     
+<script src="jquery-1.11.0.min.js" type="text/javascript"></script>
 <script src="ace-builds/src-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
 <script>
-    var editor = ace.edit("editor");
-    editor.setTheme("ace/theme/monokai");
-    editor.getSession().setMode("ace/mode/javascript");
+    $(document).ready(function() {
+        var editor = ace.edit("editor");
+        editor.setTheme("ace/theme/monokai");
+        editor.getSession().setMode("ace/mode/javascript");
+
+        $('#runCode').click(function() {
+            console.log(editor.getSession().getValue());
+            $.post('index.html', editor.getSession().getValue());
+        });
+    });
+
 </script>
 </body>
 </html>
