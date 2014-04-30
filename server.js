@@ -1,21 +1,43 @@
 var http = require('http'),
-	fs = require('fs'),
-	mime = require('mime');
+    fs = require('fs'),
+    mime = require('mime'),
+    spawn = require('child_process').spawn;
 
 http.createServer(function (req, res) {
-	var filepath = __dirname + req.url;
+	var filepath = __dirname + req.url,
+	    bot;
 
 	console.log(filepath);
 
-	fs.readFile(filepath, function(err, data) {
-		if(err) {
-			res.writeHead(400, {'Content-Type': 'text/plain'});
-			res.end('File not found');
-		} else {
-			res.writeHead(200, {'Content-Type': mime.lookup(filepath)});
-			res.end(data);
-		}
-	});
+	if (req.method === 'POST') {
+
+		console.log('post received');
+
+		/*
+		bot = spawn('node', ['studentBot.js']);
+
+		bot.stdout.on('data', function (data) {
+			console.log('stdout: ' + data);
+		});
+		bot.stderr.on('data', function (data) {
+			console.log('stderr: ' + data);
+		});
+		bot.on('close', function (statusCode) {
+			console.log('bot stopped with status code ' + statusCode);
+		});
+		*/
+
+	} else {
+		fs.readFile(filepath, function(err, data) {
+			if(err) {
+				res.writeHead(404, {'Content-Type': 'text/plain'});
+				res.end('File not found');
+			} else {
+				res.writeHead(200, {'Content-Type': mime.lookup(filepath)});
+				res.end(data);
+			}
+		});
+	}
 
 }).listen(8000);
 
