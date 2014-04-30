@@ -11,14 +11,13 @@ http.createServer(function (req, res) {
 	console.log(filepath);
 
 	if (req.method === 'POST') {
-		console.log('post received');
+
 		userCode = '';
 		req.on('data', function (data) {
 			userCode += data;
 		});
 
 		req.on('end', function () {
-			console.log(userCode);
 			fs.writeFileSync('code.js', userCode);
 
 			bot = spawn('node', ['code.js']);
@@ -31,8 +30,8 @@ http.createServer(function (req, res) {
 			});
 			bot.on('close', function (statusCode) {
 				console.log('bot stopped with status code ' + statusCode);
+				res.end();
 			});
-
 		});
 
 	} else {
