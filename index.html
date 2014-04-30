@@ -7,8 +7,8 @@
         position: absolute;
         top: 0;
         right: 0;
-        bottom: 0;
         left: 0;
+        height: 70%;
     }
 
     #runCode {
@@ -21,19 +21,33 @@
 	font-size: 20px;
 	border-radius: 4px;
     }
+
+    #terminal {
+        position: absolute;
+        right: 0;
+        left: 0;
+        bottom: 0;
+        height: 30%;
+        background-color: blue;
+        color: white;
+        overflow: auto;
+    }
 </style>
 </head>
 <body>
 
-<div id="editor"></div>
-
-<button id="runCode">Run</button>
+    <div id="editor"></div>
+    <button id="runCode">Run</button>
+    <div id="terminal"></div>
     
 <script src="jquery-1.11.0.min.js" type="text/javascript"></script>
 <script src="ace-builds/src-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
+<script src="/socket.io/socket.io.js"></script>
 <script>
     $(document).ready(function() {
-        var editor = ace.edit("editor");
+        var socket,
+            terminal,
+            editor = ace.edit("editor");
         editor.setTheme("ace/theme/monokai");
         editor.getSession().setMode("ace/mode/javascript");
 
@@ -51,6 +65,14 @@
         $('#runCode').click(function() {
             console.log(editor.getSession().getValue());
             $.post('index.html', editor.getSession().getValue());
+        });
+
+        terminal = $('#terminal');
+
+        socket = io.connect();
+        socket.on('message', function(data){
+            console.log(data.message);
+            terminal.append('<p>' + data.message + '</p>');
         });
     });
 

@@ -2,9 +2,11 @@ var http = require('http'),
     fs = require('fs'),
     mime = require('mime'),
     spawn = require('child_process').spawn;
+    io = require('socket.io');
+    
 
 var codeIsRunning = false;
-http.createServer(function (req, res) {
+var server = http.createServer(function (req, res) {
 	var filepath = __dirname + req.url,
 	    bot,
 	    userCode;
@@ -31,12 +33,15 @@ http.createServer(function (req, res) {
 
 				bot.stdout.on('data', function (data) {
 					console.log('stdout: ' + data);
+					io.sockets.emit('message', {'message': data.toString()});
 				});
 				bot.stderr.on('data', function (data) {
 					console.log('stderr: ' + data);
+					io.sockets.emit('message', {'message': data.toString()});
 				});
 				bot.on('close', function (statusCode) {
 					console.log('bot stopped with status code ' + statusCode);
+					io.sockets.emit('message', {'message': 'bot stopped with status code ' + statusCode});
 					codeIsRunning = false;
 					res.end();
 				});
@@ -55,6 +60,12 @@ http.createServer(function (req, res) {
 		});
 	}
 
-}).listen(8000);
+});
+
+server.listen(8000);
+io = io.listen(server);
+io.sockets.on('connection', function(socket){
+    socket.emit('message', {'message': 'hello world'});
+});
 
 console.log('Server running at http://127.0.0.1:8000/');
