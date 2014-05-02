@@ -73,6 +73,7 @@
         socket.on('message', function(data){
             console.log(data.message);
             terminal.append('<p>' + data.message + '</p>');
+            terminal.scrollTop(terminal.prop('scrollHeight'));
         });
     });
 
