@@ -1,3 +1,6 @@
 Have node server run on startup
 Add stop button on clientside
 Loading screen clientside
+Round right/left numbers to a certain decimal place
+Be able to change location of terminal
+Be able to step through instructions (ala the debugger)
