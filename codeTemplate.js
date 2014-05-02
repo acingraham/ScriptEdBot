@@ -6,71 +6,110 @@ var five = require("johnny-five"),
 board = new five.Board();
 
 board.on("ready", function() {
+  var leftServo,
+      rightServo,
+      queue,
 
-  var leftServo, rightServo;
+      DriveAction,
+      DriveQueue,
 
-  // Create a new `servo` hardware instance.
-  leftServo = new five.Servo(6);
-  leftServo.type = "continuous";
-  leftServo.isInverted = true;
-  leftServo.startAt = 0;
+      createServo;
 
-  rightServo = new five.Servo(5);
-  rightServo.type = "continuous";
-  rightServo.isInverted = true;
-  rightServo.startAt = 0;
+  DriveAction = function (directions) {
+    this.leftSpeed = directions.leftSpeed;
+    this.rightSpeed = directions.rightSpeed;
+    
+    this.turnLeftWheel();
+    this.turnRightWheel();
+  };
+  DriveAction.prototype.turnLeftWheel = function () {
+    var speed = this.leftSpeed,
+        adjustedSpeed = (speed / 1000) + 0.01;
 
-  function right(num) {
-    var adjustedValue = (num / 100) - .04;
-    console.log("right: " + num);
-    rightServo.cw(adjustedValue);
-  }
+    console.log("left: " + adjustedSpeed);
+    leftServo.ccw(adjustedSpeed);
+  };
+  DriveAction.prototype.turnRightWheel = function () {
+    var speed = this.rightSpeed,
+        adjustedSpeed = (speed / 1000) - 0.04;
 
-  function left(num) {
-    var adjustedValue = (num / 100) + .01;
-    console.log("left: " + num);
-    leftServo.ccw(adjustedValue);
-  }
+    console.log("right: " + adjustedSpeed);
+    rightServo.cw(adjustedSpeed);
+  };
   
-  var TIME_INTERVAL = 1000;
+  DriveQueue = function () {
+    this.tasks = [];
+  };
+  DriveQueue.prototype.add = function (task) {
+    this.tasks.push( function (callback) {
+        new DriveAction(task.directions);
+        if (callback) {
+          setTimeout( function () {
+            callback();
+          }, task.durationInSeconds * 1000);
+        }
+    });
+  };
+  DriveQueue.prototype.run = function () {
+    var self = this,
+        task;
 
-  var time = TIME_INTERVAL;
+    (function next() {
+          if(self.tasks.length > 0) {
+              task = self.tasks.shift();
+              task.apply(self, [next].concat(Array.prototype.slice.call(arguments, 0)));
+          }
+          else {
+            self.end();
+          }
+    })();
+  };
+  DriveQueue.prototype.end = function () {
+    new DriveAction({
+        leftSpeed: 0,
+        rightSpeed: 0
+    });
+    setTimeout( function () {
+      console.log('exit');
+      process.exit(0);
+    }, 300);
+  };
+  
+  createServo = function (options) {
+    var servo = new five.Servo(options.slot);
 
-  left(0);
-  right(0);
+    servo.type = options.type;
+    servo.isInverted = options.isInverted;
+    servo.startAt = options.startAt;
 
-  setTimeout(function() {
-    left(100);
-    right(100);
-  }, time);
+    return servo;
+  };
 
-  time += TIME_INTERVAL;
-  setTimeout(function() {
-    left(-100);
-    right(100);
-  }, time);
+  leftServo = createServo({
+    slot       : 6,
+    type       : 'continuous',
+    isInverted : true,
+    startAt    : 0
+  });
 
-  time += TIME_INTERVAL;
-  setTimeout(function() {
-    left(0);
-    right(0);
-  }, time);
+  rightServo = createServo({
+    slot       : 5,
+    type       : 'continuous',
+    isInverted : true,
+    startAt    : 0
+  });
 
-  time += TIME_INTERVAL;
-  setTimeout(function() {
-    left(3);
-    right(80);
-  }, time);
+  queue = new DriveQueue();
 
-  time += TIME_INTERVAL;
-  setTimeout(function() {
-    left(0);
-    right(0);
-  }, time);
-
-  setTimeout(function() {
-    process.exit(0);
-  }, time+100);
-
+  // Add driving directions to the driving queue
+  queue.add({
+    directions : {
+      leftSpeed  : 100,
+      rightSpeed : 100
+    },
+    durationInSeconds : 2
+  });
+  
+  // Start the driving queue
+  queue.run();
 });
-
