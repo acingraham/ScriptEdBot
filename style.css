@@ -7,6 +7,7 @@ body {
     position: absolute;
     height: 100%;
     width: 280px;
+    overflow: auto;
 }
 
 #optionsHeader {
@@ -22,6 +23,18 @@ body {
     font-weight: bold;
     font-size: 36px;
     font-family: 'Lobster', Georgia, Times, serif;
+}
+
+#controls {
+    margin: 0 auto;
+}
+
+#controls td {
+    text-align: right;
+}
+
+#controls td + td {
+    text-align: left;
 }
 
 #editorWrapper {
@@ -44,8 +57,9 @@ body {
     position: absolute;
     top: 20px;
     right: 40px;
-    font-size: 20px;
+    font-size: 30px;
     border-radius: 4px;
+    font-family: 'Lobster', Georgia, Times, serif;
 }
 
 #terminalWrapper {
