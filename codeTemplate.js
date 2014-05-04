@@ -31,7 +31,7 @@ board.on("ready", function() {
   };
   DriveAction.prototype.turnRightWheel = function () {
     var speed = this.rightSpeed,
-        adjustedSpeed = (speed / 1000) - 0.04;
+        adjustedSpeed = (speed / 1000) - 0.06;
 
     console.log("right: " + adjustedSpeed);
     rightServo.cw(adjustedSpeed);
