@@ -17,16 +17,16 @@
                     <label for="fontSize">Font Size</label>
                 </td>
                 <td>
-                    <select id="fontsize" size="1">
-                        <option value="10px">10px</option>
-                        <option value="11px">11px</option>
-                        <option value="12px" selected="selected">12px</option>
-                        <option value="13px">13px</option>
-                        <option value="14px">14px</option>
-                        <option value="16px">16px</option>
-                        <option value="18px">18px</option>
-                        <option value="20px">20px</option>
-                        <option value="24px">24px</option>
+                    <select id="fontSize" size="1">
+                        <option value="10">10px</option>
+                        <option value="11">11px</option>
+                        <option value="12">12px</option>
+                        <option value="13">13px</option>
+                        <option value="14">14px</option>
+                        <option value="16">16px</option>
+                        <option value="18">18px</option>
+                        <option value="20">20px</option>
+                        <option value="24">24px</option>
                     </select>
                 </td>
             </tr>
@@ -36,9 +36,9 @@
                 </td>
                 <td>
                     <select id="keyBinding" size="1">
-                        <option value="ace">Ace</option>
-                        <option value="vim">Vim</option>
-                        <option value="emacs">Emacs</option>
+                        <option value="">Ace</option>
+                        <option value="ace/keyboard/vim">Vim</option>
+                        <option value="ace/keyboard/emacs">Emacs</option>
                     </select>
                 </td>
             </tr>
@@ -62,8 +62,17 @@
                 terminal,
                 editor = ace.edit("editor");
 
-            editor.setTheme("ace/theme/monokai");
-            editor.getSession().setMode("ace/mode/javascript");
+            $('#keyBinding').change(function() {
+                editor.setKeyboardHandler($(this).val());
+            });
+
+            $('#fontSize').change(function() {
+                editor.setFontSize(parseInt($(this).val(),10));
+            });
+
+            $('#fontSize').val(12).change();
+            editor.setTheme('ace/theme/monokai');
+            editor.getSession().setMode('ace/mode/javascript');
 
             $.ajax({
                 url: "codeTemplate.js",
