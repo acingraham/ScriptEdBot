@@ -73,6 +73,7 @@
             $('#fontSize').val(12).change();
             editor.setTheme('ace/theme/monokai');
             editor.getSession().setMode('ace/mode/javascript');
+            editor.setShowPrintMargin(false);
 
             $.ajax({
                 url: "codeTemplate.js",
