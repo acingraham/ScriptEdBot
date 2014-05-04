@@ -1,6 +1,25 @@
-Have node server run on startup
-Add stop button on clientside
+Software:
+Automate build process
+Beautify screen
+Remove index.html and port from url
+Print better terminal messages
+Create README
+Add stop button
+Use a static ip address
+Better error print outs
+Check if you can add console logs to code
+Automatically start / restart server
+Add the ability to save and load previous work
 Loading screen clientside
 Round right/left numbers to a certain decimal place
 Be able to change location of terminal
 Be able to step through instructions (ala the debugger)
+Print ip address and port on server startup instead of 127.0.0.1:8000
+Switch io to not print so much debug info
+
+Hardware:
+Remake chassis
+Add compass
+Add distance sensor
+Add marker
+Add audio if possible
