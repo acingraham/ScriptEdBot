@@ -2,13 +2,23 @@
 <html lang="en">
 <head>
     <title>ScriptEd Bot</title>
-    <link rel="stylesheet" type="text/css" href="style.css">
+    <link href="http://fonts.googleapis.com/css?family=Lobster" rel="stylesheet" type="text/css">
+    <link href="style.css" rel="stylesheet" type="text/css">
 </head>
 <body>
-
-    <div id="editor"></div>
-    <button id="runCode">Run</button>
-    <div id="terminal"></div>
+    <div id="options">
+        <div id="optionsHeader">
+            <a href="http://scripted.org/" target="_blank">ScriptEd Bot</a>
+            <hr>
+        </div>
+    </div>
+    <div id="editorWrapper">
+        <div id="editor"></div>
+        <button id="runCode">Run</button>
+        <div id="terminalWrapper">
+            <div id="terminal"></div>
+        </div>
+    </div>
 
     <script src="jquery-1.11.0.min.js" type="text/javascript"></script>
     <script src="ace-builds/src-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>

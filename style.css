@@ -1,9 +1,40 @@
+body {
+    background-color: #d3e3f5;
+    margin: 0 auto;
+}
+
+#options {
+    position: absolute;
+    height: 100%;
+    width: 280px;
+}
+
+#optionsHeader {
+    width: 80%;
+    margin: 0 auto;
+    text-align: center;
+    margin-top: 20px;
+}
+
+#options a {
+    text-decoration: none;
+    color: #333;
+    font-weight: bold;
+    font-size: 36px;
+    font-family: 'Lobster', Georgia, Times, serif;
+}
+
+#editorWrapper {
+    position: absolute;
+    left: 280px;
+    right: 0;
+    height: 100%;
+}
+
 #editor {
     position: absolute;
-    top: 0;
-    right: 0;
-    left: 0;
     height: 70%;
+    width: 100%;
 }
 
 #runCode {
@@ -17,7 +48,7 @@
     border-radius: 4px;
 }
 
-#terminal {
+#terminalWrapper {
     background-color: grey;
     z-index: 1000;
     position: absolute;
@@ -26,6 +57,9 @@
     left: 0;
     bottom: 0;
     color: white;
+}
+
+#terminal {
     overflow: auto;
     padding: 10px;
 }
