@@ -9,11 +9,11 @@ var codeIsRunning = false,
         var formattedMsg = msg;
 
         if (msg.search(/Device\(s\)/g) !== -1) {
-            formattedMsg = 'ScriptEd Bot detected...';
+            formattedMsg = 'Detected...';
         } else if (msg.search(/Connected/g) !== -1) {
-            formattedMsg = 'ScriptEd Bot connected...';
+            formattedMsg = 'Connected...';
         } else if (msg.search(/Repl/g) !== -1) {
-            formattedMsg = 'ScriptEd Bot initialized...';
+            formattedMsg = 'Initialized...';
         }
 
         return formattedMsg;
@@ -55,7 +55,7 @@ var server = http.createServer(function (req, res) {
 				});
 				bot.on('close', function (statusCode) {
 					console.log('ScriptEd Bot stopped with status code ' + statusCode);
-					io.sockets.emit('message', {'message': 'Bot stopped with status code ' + statusCode});
+					io.sockets.emit('message', {'message': 'ScriptEd Bot stopped with status code ' + statusCode});
 					codeIsRunning = false;
 					res.end();
 				});
