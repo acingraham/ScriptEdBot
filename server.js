@@ -64,8 +64,9 @@ var server = http.createServer(function (req, res) {
 
 server.listen(8000);
 io = io.listen(server);
+io.set('log level', 1);
 io.sockets.on('connection', function(socket){
-    socket.emit('message', {'message': 'hello world'});
+    socket.emit('message', {'message': 'Connected to ScriptEd Bot'});
 });
 
 console.log('Server running at http://127.0.0.1:8000/');

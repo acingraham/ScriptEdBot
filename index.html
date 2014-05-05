@@ -60,6 +60,7 @@
         $(document).ready(function() {
             var socket,
                 terminal,
+                terminalWrapper,
                 editor = ace.edit("editor");
 
             $('#keyBinding').change(function() {
@@ -92,12 +93,13 @@
             });
 
             terminal = $('#terminal');
+            terminalWrapper = $('#terminalWrapper');
 
             socket = io.connect();
             socket.on('message', function(data){
                 console.log(data.message);
                 terminal.append('>> ' + data.message + '<br>');
-                terminal.scrollTop(terminal.prop('scrollHeight'));
+                terminalWrapper.scrollTop(terminal.prop('scrollHeight'));
             });
         });
 
