@@ -7,7 +7,6 @@ Create README
 Add stop button
 Use a static ip address
 Better error print outs
-Check if you can add console logs to code
 Automatically start / restart server
 Add the ability to save and load previous work
 Loading screen clientside
@@ -18,6 +17,10 @@ Be able to step through instructions (ala the debugger)
 Print ip address and port on server startup instead of 127.0.0.1:8000
 Switch io to not print so much debug info
 Add adjustments for servos to a separate configuration file
+Standardize formatting
+Make sure the speeds are working appropriately
+Button to clear terminal
+Add favicon
 
 Hardware:
 Remake chassis

@@ -3,13 +3,26 @@ var http = require('http'),
     mime = require('mime'),
     spawn = require('child_process').spawn;
     io = require('socket.io');
-    
 
-var codeIsRunning = false;
+var codeIsRunning = false,
+    formatMessage = function (msg) {
+        var formattedMsg = msg;
+
+        if (msg.search(/Device\(s\)/g) !== -1) {
+            formattedMsg = 'ScriptEd Bot detected...';
+        } else if (msg.search(/Connected/g) !== -1) {
+            formattedMsg = 'ScriptEd Bot connected...';
+        } else if (msg.search(/Repl/g) !== -1) {
+            formattedMsg = 'ScriptEd Bot initialized...';
+        }
+
+        return formattedMsg;
+    };
+
 var server = http.createServer(function (req, res) {
-	var filepath = __dirname + req.url,
-	    bot,
-	    userCode;
+	var bot,
+	    userCode,
+	    filepath = __dirname + req.url;
 
 	console.log(filepath);
 
@@ -29,19 +42,20 @@ var server = http.createServer(function (req, res) {
 			req.on('end', function () {
 				fs.writeFileSync('code.js', userCode);
 
+				io.sockets.emit('message', {'message': 'Starting the bot...'});
 				bot = spawn('node', ['code.js']);
 
 				bot.stdout.on('data', function (data) {
 					console.log('stdout: ' + data);
-					io.sockets.emit('message', {'message': data.toString()});
+					io.sockets.emit('message', {'message': formatMessage(data.toString())});
 				});
 				bot.stderr.on('data', function (data) {
 					console.log('stderr: ' + data);
-					io.sockets.emit('message', {'message': data.toString()});
+					io.sockets.emit('message', {'message': formatMessage(data.toString())});
 				});
 				bot.on('close', function (statusCode) {
-					console.log('bot stopped with status code ' + statusCode);
-					io.sockets.emit('message', {'message': 'bot stopped with status code ' + statusCode});
+					console.log('ScriptEd Bot stopped with status code ' + statusCode);
+					io.sockets.emit('message', {'message': 'Bot stopped with status code ' + statusCode});
 					codeIsRunning = false;
 					res.end();
 				});

@@ -26,14 +26,12 @@ board.on("ready", function() {
     var speed = this.leftSpeed,
         adjustedSpeed = (speed / 1000) + 0.01;
 
-    console.log("left: " + adjustedSpeed);
     leftServo.ccw(adjustedSpeed);
   };
   DriveAction.prototype.turnRightWheel = function () {
     var speed = this.rightSpeed,
         adjustedSpeed = (speed / 1000) - 0.06;
 
-    console.log("right: " + adjustedSpeed);
     rightServo.cw(adjustedSpeed);
   };
   
@@ -42,8 +40,13 @@ board.on("ready", function() {
   };
   DriveQueue.prototype.add = function (task) {
     this.tasks.push( function (callback) {
+        var taskMessage;
         new DriveAction(task.directions);
         if (callback) {
+          taskMessage = '{ left: ' + task.directions.leftSpeed;
+          taskMessage += ', right: ' + task.directions.rightSpeed;
+          taskMessage += ', duration: ' + task.durationInSeconds + ' }';
+          console.log(taskMessage);
           setTimeout( function () {
             callback();
           }, task.durationInSeconds * 1000);
@@ -70,7 +73,6 @@ board.on("ready", function() {
         rightSpeed: 0
     });
     setTimeout( function () {
-      console.log('exit');
       process.exit(0);
     }, 300);
   };
@@ -105,7 +107,7 @@ board.on("ready", function() {
   queue.add({
     directions : {
       leftSpeed  : 100,
-      rightSpeed : 100
+      rightSpeed : -100
     },
     durationInSeconds : 2
   });

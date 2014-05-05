@@ -97,9 +97,12 @@
 
             socket = io.connect();
             socket.on('message', function(data){
-                console.log(data.message);
-                terminal.append('>> ' + data.message + '<br>');
-                terminalWrapper.scrollTop(terminal.prop('scrollHeight'));
+                console.log('length: ' + data.message.length + ', content: ' + data.message);
+                var message = data.message.trim();
+                if(message && message !== '>>') {
+                    terminal.append('>> ' + message + '<br>');
+                    terminalWrapper.scrollTop(terminal.prop('scrollHeight'));
+                }
             });
         });
 
