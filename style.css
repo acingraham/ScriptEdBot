@@ -63,14 +63,14 @@ body {
 }
 
 #terminalWrapper {
-    background-color: grey;
+    background-color: rgb(75, 72, 72);
     z-index: 1000;
     position: absolute;
     height: 30%;
     right: 0;
     left: 0;
     bottom: 0;
-    color: white;
+    color: lightgray;
 }
 
 #terminal {

@@ -13,6 +13,7 @@ Add the ability to save and load previous work
 Loading screen clientside
 Round right/left numbers to a certain decimal place
 Be able to change location of terminal
+Be able to adjust size of terminal/editor
 Be able to step through instructions (ala the debugger)
 Print ip address and port on server startup instead of 127.0.0.1:8000
 Switch io to not print so much debug info
