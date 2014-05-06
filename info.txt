@@ -1,3 +1,6 @@
+Static IP Address:
 When setting up the static ip address, use "route -n" to get the Gateway IP Address.
 Then, go into wicd-curses and set IP to whatever you'd like your IP to be, the netmask to 255.255.255.0, and the Gateway IP Address to whatever you found using "route -n".
 
+Making the server start on boot
+http://www.linuxcircle.com/2013/12/30/run-nodejs-server-on-boot-with-forever-on-raspberry-pi/
