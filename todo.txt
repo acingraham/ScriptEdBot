@@ -5,7 +5,6 @@ Remove index.html and port from url
 Print better terminal messages
 Create README
 Add stop button
-Use a static ip address
 Better error print outs
 Automatically start / restart server
 Add the ability to save and load previous work
