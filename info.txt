@@ -1,0 +1,3 @@
+When setting up the static ip address, use "route -n" to get the Gateway IP Address.
+Then, go into wicd-curses and set IP to whatever you'd like your IP to be, the netmask to 255.255.255.0, and the Gateway IP Address to whatever you found using "route -n".
+
