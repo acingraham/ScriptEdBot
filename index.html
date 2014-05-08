@@ -6,6 +6,13 @@
     <link href="style.css" rel="stylesheet" type="text/css">
 </head>
 <body>
+    <div id="loading">
+        <div id="loading-wrapper">
+            <img id="loading-image" src="ajax-loader.gif" alt="Loading..." />
+            <div id="loading-text">Loading...</div>
+        </div>
+    </div>
+
     <div id="options">
         <div id="optionsHeader">
             <a href="http://scripted.org/" target="_blank">ScriptEd Bot</a>
@@ -85,6 +92,9 @@
             })
             .fail(function () {
                 editor.getSession().setValue("// Failed to retrieve example code.  You're on your own!");
+            })
+            .always(function () {
+                $('#loading').fadeOut(750);
             });
 
             $('#runCode').click(function() {

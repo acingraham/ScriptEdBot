@@ -8,6 +8,7 @@ board = new five.Board();
 board.on("ready", function() {
   var leftServo,
       rightServo,
+      mag,
       queue,
 
       DriveAction,
@@ -101,6 +102,8 @@ board.on("ready", function() {
     startAt    : 0
   });
 
+  mag = new five.Magnetometer();
+
   queue = new DriveQueue();
 
   // Add driving directions to the driving queue
@@ -109,7 +112,12 @@ board.on("ready", function() {
       leftSpeed  : 100,
       rightSpeed : -100
     },
-    durationInSeconds : 2
+    durationInSeconds : 10
+  });
+
+  mag.on("headingchange", function() {
+    console.log("heading", Math.floor(this.heading));
+    console.log("bearing", this.bearing);
   });
   
   // Start the driving queue
