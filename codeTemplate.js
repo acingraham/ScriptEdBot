@@ -10,73 +10,31 @@ board.on("ready", function() {
       rightServo,
       mag,
       queue,
-
-      DriveAction,
-      DriveQueue,
-
-      createServo;
-
-  DriveAction = function (directions) {
-    this.leftSpeed = directions.leftSpeed;
-    this.rightSpeed = directions.rightSpeed;
+      createServo,
+      time = 0;
+      
+      
+  function drive(left, right, duration) {
+    var adjustedLeft = (left / 1000) + 0.01,
+        adjustedRight = (right / 1000) - 0.06;
+        
+    (function (startTime) {
+      setTimeout(function() {
+        leftServo.ccw(adjustedLeft);
+        rightServo.cw(adjustedRight);
+      }, startTime);
+      
+    })(time);
     
-    this.turnLeftWheel();
-    this.turnRightWheel();
-  };
-  DriveAction.prototype.turnLeftWheel = function () {
-    var speed = this.leftSpeed,
-        adjustedSpeed = (speed / 1000) + 0.01;
-
-    leftServo.ccw(adjustedSpeed);
-  };
-  DriveAction.prototype.turnRightWheel = function () {
-    var speed = this.rightSpeed,
-        adjustedSpeed = (speed / 1000) - 0.06;
-
-    rightServo.cw(adjustedSpeed);
-  };
+    time += duration;
+  }
   
-  DriveQueue = function () {
-    this.tasks = [];
-  };
-  DriveQueue.prototype.add = function (task) {
-    this.tasks.push( function (callback) {
-        var taskMessage;
-        new DriveAction(task.directions);
-        if (callback) {
-          taskMessage = '{ left: ' + task.directions.leftSpeed;
-          taskMessage += ', right: ' + task.directions.rightSpeed;
-          taskMessage += ', duration: ' + task.durationInSeconds + ' }';
-          console.log(taskMessage);
-          setTimeout( function () {
-            callback();
-          }, task.durationInSeconds * 1000);
-        }
-    });
-  };
-  DriveQueue.prototype.run = function () {
-    var self = this,
-        task;
-
-    (function next() {
-          if(self.tasks.length > 0) {
-              task = self.tasks.shift();
-              task.apply(self, [next].concat(Array.prototype.slice.call(arguments, 0)));
-          }
-          else {
-            self.end();
-          }
-    })();
-  };
-  DriveQueue.prototype.end = function () {
-    new DriveAction({
-        leftSpeed: 0,
-        rightSpeed: 0
-    });
-    setTimeout( function () {
-      process.exit(0);
-    }, 300);
-  };
+  function stop() {
+      drive(0,0,0);
+      setTimeout(function() {
+          process.exit(0);
+      }, time+1);
+  }
   
   createServo = function (options) {
     var servo = new five.Servo(options.slot);
@@ -102,24 +60,18 @@ board.on("ready", function() {
     startAt    : 0
   });
 
+  /*
   mag = new five.Magnetometer();
-
-  queue = new DriveQueue();
-
-  // Add driving directions to the driving queue
-  queue.add({
-    directions : {
-      leftSpeed  : 100,
-      rightSpeed : -100
-    },
-    durationInSeconds : 10
-  });
 
   mag.on("headingchange", function() {
     console.log("heading", Math.floor(this.heading));
     console.log("bearing", this.bearing);
   });
+  */
   
-  // Start the driving queue
-  queue.run();
+  drive(100,100,5000);
+  drive(-100,100,5000);
+  stop();
+
 });
+
