@@ -8,6 +8,7 @@ board = new five.Board();
 board.on("ready", function() {
   var leftServo,
       rightServo,
+      penServo,
       mag,
       queue,
       createServo,
@@ -15,8 +16,11 @@ board.on("ready", function() {
       
       
   function drive(left, right, duration) {
-    var adjustedLeft = (left / 1000) + 0.01,
-        adjustedRight = (right / 1000) - 0.06;
+    //var adjustedLeft = (left / 1000) + 0.01,
+    //    adjustedRight = (right / 1000) - 0.06;
+        
+    var adjustedLeft = (left / 1000),
+        adjustedRight = (right / 1000);
         
     (function (startTime) {
       setTimeout(function() {
@@ -31,9 +35,32 @@ board.on("ready", function() {
   
   function stop() {
       drive(0,0,0);
+      stopMarker();
       setTimeout(function() {
           process.exit(0);
-      }, time+1);
+      }, time+100);
+  }
+  
+  function stopMarker() {
+      setTimeout(function() {
+          penServo.to(90);
+      }, time);
+  }
+
+  function raiseMarker() {
+    setTimeout(function() {
+      penServo.to(90);
+    }, time);
+    time += 1000;
+    stopMarker();
+  }
+
+  function lowerMarker() {
+    setTimeout(function() {
+      penServo.to(0);
+    }, time);
+    time += 1000;
+    stopMarker();
   }
   
   createServo = function (options) {
@@ -60,18 +87,38 @@ board.on("ready", function() {
     startAt    : 0
   });
 
-  /*
-  mag = new five.Magnetometer();
-
-  mag.on("headingchange", function() {
-    console.log("heading", Math.floor(this.heading));
-    console.log("bearing", this.bearing);
+  penServo = createServo({
+    slot       : 11,
+    type       : 'continuous',
+    isInverted : true,
+    startAt    : 0
   });
-  */
-  
-  drive(100,100,5000);
-  drive(-100,100,5000);
-  stop();
+
+
+  try {
+      // YOUR CODE GOES HERE
+      /*
+      mag = new five.Magnetometer();
+    
+      mag.on("headingchange", function() {
+        console.log("heading", Math.floor(this.heading));
+        console.log("bearing", this.bearing);
+      });
+      */
+      //lowerMarker();
+      
+      for(var i = 0; i < 10; ++i) {
+          drive(0,0, 30000)
+          //drive(100,100,1500);
+          //raiseMarker();
+          //drive(-100,100,1633);
+          //lowerMarker();
+      }
+  } finally {
+    stop();
+  } 
 
 });
+
+
 
