@@ -1,122 +1,74 @@
 var five = require("johnny-five"),
     SerialPort = require("serialport").SerialPort,
-    board, 
-    servo;
-
-board = new five.Board();
+    board = new five.Board();
 
 board.on("ready", function() {
-  var leftServo,
-      rightServo,
-      penServo,
-      mag,
-      queue,
-      createServo,
-      time = 0;
+    var leftServo,
+        rightServo,
+        createServo,
+        time = 0;
       
       
-  function drive(left, right, duration) {
+    function drive(left, right, duration) {
         
-    var adjustedLeft = left / 1000,
-        adjustedRight = right / 1002;
+        var adjustedLeft = (left / 1000).toFixed(3),
+            adjustedRight = (right / 1000).toFixed(3);
         
-    setTimeout(function() {
-        leftServo.ccw(adjustedLeft);
-        rightServo.cw(adjustedRight);
-    }, time);
+        setTimeout(function() {
+            leftServo.ccw(adjustedLeft);
+            rightServo.cw(adjustedRight);
+        }, time);
     
-    time += duration;
-  }
+        time += duration;
+    }
   
-  function stop() {
-      drive(0,0,0);
-      stopMarker();
-      setTimeout(function() {
-          process.exit(0);
-      }, time+100);
-  }
+    function stop() {
+        drive(0,0,0);
+        setTimeout(function() {
+            process.exit(0);
+        }, time+100);
+    }
   
-  function stopMarker() {
-      setTimeout(function() {
-          penServo.to(90);
-      }, time);
-  }
+    createServo = function (options) {
+        var servo = new five.Servo(options.slot);
 
-  function raiseMarker() {
-    setTimeout(function() {
-      penServo.to(90);
-    }, time);
-    time += 1000;
-    stopMarker();
-  }
+        servo.type = options.type;
+        servo.isInverted = options.isInverted;
+        servo.startAt = options.startAt;
 
-  function lowerMarker() {
-    setTimeout(function() {
-      penServo.to(0);
-    }, time);
-    time += 1000;
-    stopMarker();
-  }
-  
-  createServo = function (options) {
-    var servo = new five.Servo(options.slot);
+        return servo;
+    };
 
-    servo.type = options.type;
-    servo.isInverted = options.isInverted;
-    servo.startAt = options.startAt;
+    leftServo = createServo({
+        slot       : 6,
+        type       : 'continuous',
+        isInverted : true,
+        startAt    : 0
+    });
 
-    return servo;
-  };
+    rightServo = createServo({
+        slot       : 5,
+        type       : 'continuous',
+        isInverted : true,
+        startAt    : 0
+    });
 
-  leftServo = createServo({
-    slot       : 6,
-    type       : 'continuous',
-    isInverted : true,
-    startAt    : 0
-  });
-
-  rightServo = createServo({
-    slot       : 5,
-    type       : 'continuous',
-    isInverted : true,
-    startAt    : 0
-  });
-
-  penServo = createServo({
-    slot       : 11,
-    type       : 'continuous',
-    isInverted : true,
-    startAt    : 0
-  });
-
-
-  try {
-      // YOUR CODE GOES HERE
-      /*
-      mag = new five.Magnetometer();
+    // YOUR CODE GOES HERE
     
-      mag.on("headingchange", function() {
-        console.log("heading", Math.floor(this.heading));
-        console.log("bearing", this.bearing);
-      });
-      */
-      //lowerMarker();
-      
-      //for(var i = 0; i < 10; ++i) {
-          drive(0,0, 3000)
-          drive(50,50, 3000)
-          drive(100,100, 3000)
-          //drive(100,100,1500);
-          //raiseMarker();
-          //drive(-100,100,1633);
-          //lowerMarker();
-      //}
-  } finally {
+    // Here's some example code to get you started
+    
+    // This will make both wheels drive forward at 100% speed for 2 seconds
+    drive(100, 100, 2000);
+    
+    // This will make the left wheel go backwards at 100% speed while the right wheel goes forwards at 100% for 2 seconds
+    drive(-100, 100, 2000);
+    
+    // This will make both wheels drive backward at 50% speed for half of 1 second
+    drive(-50, -50, 500);
+    
+    // This is important!  Leave this at the end of your program to make the robot stop running.
     stop();
-  } 
 
 });
-
-
 
 
