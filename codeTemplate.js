@@ -17,16 +17,13 @@ board.on("ready", function() {
       
   function drive(left, right, duration) {
         
-    var adjustedLeft = (left / 1000),
-        adjustedRight = (right / 1000);
+    var adjustedLeft = left / 1000,
+        adjustedRight = right / 1002;
         
-    (function (startTime) {
-      setTimeout(function() {
+    setTimeout(function() {
         leftServo.ccw(adjustedLeft);
         rightServo.cw(adjustedRight);
-      }, startTime);
-      
-    })(time);
+    }, time);
     
     time += duration;
   }
@@ -119,6 +116,7 @@ board.on("ready", function() {
   } 
 
 });
+
 
 
 
