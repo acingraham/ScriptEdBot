@@ -16,8 +16,6 @@ board.on("ready", function() {
       
       
   function drive(left, right, duration) {
-    //var adjustedLeft = (left / 1000) + 0.01,
-    //    adjustedRight = (right / 1000) - 0.06;
         
     var adjustedLeft = (left / 1000),
         adjustedRight = (right / 1000);
@@ -107,13 +105,15 @@ board.on("ready", function() {
       */
       //lowerMarker();
       
-      for(var i = 0; i < 10; ++i) {
-          drive(0,0, 30000)
+      //for(var i = 0; i < 10; ++i) {
+          drive(0,0, 3000)
+          drive(50,50, 3000)
+          drive(100,100, 3000)
           //drive(100,100,1500);
           //raiseMarker();
           //drive(-100,100,1633);
           //lowerMarker();
-      }
+      //}
   } finally {
     stop();
   } 
