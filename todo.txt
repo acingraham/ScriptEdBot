@@ -21,6 +21,8 @@ Make sure the speeds are working appropriately
 Button to clear terminal
 Add favicon
 
+For adjustable panels, consider using https://github.com/nathancahill/Split.js
+
 Hardware:
 Remake chassis
 Add compass
