@@ -1,4 +1,5 @@
 Software:
+This link is an example of booting into a fullscreen web app on startup: http://blog.dylanjpierce.com/raspberrypi/magicmirror/tutorial/2015/12/27/build-a-magic-mirror.html
 Automate build process
 Beautify screen
 Remove index.html and port from url
