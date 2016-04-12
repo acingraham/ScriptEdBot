@@ -5,12 +5,9 @@ var five = require("johnny-five"),
 board.on("ready", function() {
     var leftServo,
         rightServo,
-        createServo,
         time = 0;
       
-      
     function drive(left, right, duration) {
-        
         var adjustedLeft = (left / 1000).toFixed(3),
             adjustedRight = (right / 1000).toFixed(3);
         
@@ -23,13 +20,13 @@ board.on("ready", function() {
     }
   
     function stop() {
-        drive(0,0,0);
+        drive(0, 0, 0);
         setTimeout(function() {
             process.exit(0);
-        }, time+100);
+        }, time + 100);
     }
   
-    createServo = function (options) {
+    function createServo(options) {
         var servo = new five.Servo(options.slot);
 
         servo.type = options.type;
@@ -68,7 +65,4 @@ board.on("ready", function() {
     
     // This is important!  Leave this at the end of your program to make the robot stop running.
     stop();
-
 });
-
-
